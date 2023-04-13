@@ -7,10 +7,21 @@ import Konva from 'konva';
 })
 export class AppComponent {
   title = 'signal';
-  stage:any;
-  layer:any;
-  
-  ngOnit(){
+  stage: any;
+  layer: any;
+  public nodeCr: string = '';
+  public edgeFromCr: string = '';
+  public edgeToCr: string = '';
+  public edgeValCr: string = '';
+  public oldNodeName: string = '';
+  public newNodeName: string = '';
+  public edgeFrom: string = '';
+  public edgeTo: string = '';
+  public newEdgeVal: string = '';
+  public start: string = '';
+  public end: string = '';
+
+  ngOnit() {
     this.stage = new Konva.Stage({
       container: 'draw',
       width: innerWidth,
@@ -19,20 +30,25 @@ export class AppComponent {
     this.layer = new Konva.Layer();
     this.stage.add(this.layer);
   }
-  addEdge(from:any, to:any){
+  addEdge() {
+    this.edgeFromCr = '';
+    this.edgeToCr = '';
+    this.edgeValCr = '';
   }
-  addNode(nodename:string){
+  addNode() {
+    this.nodeCr = '';
   }
-  deleteNode(nodename:string){
+  editNode() {
+    this.oldNodeName = '';
+    this.newNodeName = '';
   }
-  deleteEdge(from:any, to:any){
+  editEdge() {
+    this.edgeFrom = '';
+    this.edgeTo = '';
+    this.newEdgeVal = '';
   }
-  editNode(nodename:string){
+  Solve(): any {
+    this.start = '';
+    this.end = '';
   }
-  editEdge(form:any ,to:any){
-  }
-  Solve(startNode:string, endNode:string):any{
-    return null
-  }
-
 }
