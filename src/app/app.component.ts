@@ -14,6 +14,7 @@ export class AppComponent {
   public end: string = '';
   public graph: any;
   public paper: any;
+  public model: any;
   ngOnInit() {
     let namespace = joint.shapes;
     this.graph = new joint.dia.Graph({}, { cellNamespace: namespace });
@@ -53,7 +54,7 @@ export class AppComponent {
         return magnet.getAttribute('magnet') !== 'passive';
       },
     });
-    
+
     var portsIn = {
       position: {
         name: 'left',
@@ -61,7 +62,7 @@ export class AppComponent {
       attrs: {
         portBody: {
           magnet: 'passive',
-          r: 10,
+          r: 7,
           fill: '#023047',
           stroke: '#023047',
         },
@@ -94,7 +95,7 @@ export class AppComponent {
       attrs: {
         portBody: {
           magnet: true,
-          r: 10,
+          r: 7,
           fill: '#E6A502',
           stroke: '#023047',
         },
@@ -120,7 +121,7 @@ export class AppComponent {
       ],
     };
 
-    var model = new joint.shapes.standard.Circle({
+    var model = (this.model = new joint.shapes.standard.Circle({
       position: { x: 125, y: 50 },
       size: { width: 90, height: 90 },
       attrs: {
@@ -131,7 +132,7 @@ export class AppComponent {
           fill: '#8ECAE6',
         },
         label: {
-          text: 'Model',
+          text: 'R(s)',
           fontSize: 16,
           y: -10,
         },
@@ -142,16 +143,14 @@ export class AppComponent {
           out: portsOut,
         },
       },
-    });
+    }));
 
     model.addPorts([
       {
         group: 'in',
-        attrs: { label: { text: 'in' } },
       },
       {
         group: 'out',
-        attrs: { label: { text: 'out' } },
       },
     ]);
 
@@ -203,26 +202,42 @@ export class AppComponent {
       });
       linkView.addTools(tools);
     }
+    var toolsView = new joint.dia.ToolsView({
+      tools: [new joint.elementTools.Remove()],
+    });
+    var toolsView2 = new joint.dia.ToolsView({
+      tools: [new joint.elementTools.Remove()],
+    });
+    var elementView = model.findView(this.paper);
+    var elementView2 = model2.findView(this.paper);
+    elementView.addTools(toolsView);
+    elementView2.addTools(toolsView2);
+    elementView.hideTools();
+    elementView2.hideTools();
+    this.paper.on('element:mouseenter', function (elementView: any) {
+      elementView.showTools();
+    });
+
+    this.paper.on('element:mouseleave', function (elementView: any) {
+      elementView.hideTools();
+    });
   }
 
   addNode() {
     this.paper.on('blank:pointerdown', (evt: any, x: any, y: any) => {
       if (this.nodeCr === '') return;
-      let rect = new joint.shapes.standard.Circle();
-      rect.position(x, y);
-      rect.resize(60, 60);
-      rect.attr({
-        body: {
-          fill: 'white',
-          stroke: 'black',
-          strokeWidth: 2,
-        },
-        label: {
-          text: this.nodeCr,
-          fill: 'black',
-        },
+      let circ = this.model
+        .clone()
+        .translate(x, y)
+        .attr('label/text', this.nodeCr);
+      circ.size(50, 50);
+      circ.addTo(this.graph);
+      let toolsView = new joint.dia.ToolsView({
+        tools: [new joint.elementTools.Remove()],
       });
-      rect.addTo(this.graph);
+      let elementView = circ.findView(this.paper);
+      elementView.addTools(toolsView);
+      elementView.hideTools();
       this.nodeCr = '';
     });
   }
