@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Model } from 'backbone';
 //import * as joint from 'jointjs';
 const joint = require('jointjs/dist/joint.js');
 
@@ -12,17 +13,27 @@ export class AppComponent {
   public start: string = '';
   public end: string = '';
   public graph: any;
+  public paper: any;
   ngOnInit() {
     let namespace = joint.shapes;
     this.graph = new joint.dia.Graph({}, { cellNamespace: namespace });
-    let paper = new joint.dia.Paper({
+    this.paper = new joint.dia.Paper({
       el: document.getElementById('draw'),
       width: innerWidth,
       height: innerHeight,
       gridSize: 1,
       model: this.graph,
-      defaultLink: new joint.shapes.standard.Link(),
-      linkPinning: false,
+      cellViewNamespace: namespace,
+      linkPinning: false, // Prevent link being dropped in blank paper area
+      defaultLink: () =>
+        new joint.shapes.standard.Link({
+          attrs: {
+            wrapper: {
+              cursor: 'default',
+            },
+          },
+        }),
+      defaultConnectionPoint: { name: 'boundary' },
       validateConnection: function (
         cellViewS: any,
         magnetS: any,
@@ -31,68 +42,42 @@ export class AppComponent {
         end: any,
         linkView: any
       ) {
-        // Prevent linking from input ports.
-        if (magnetS && magnetS.getAttribute('port-group') === 'in')
-          return false;
-        // Prevent linking from output ports to input ports within one element.
-        if (
-          cellViewS === cellViewT &&
-          magnetS.getAttribute('port-group') === 'out' &&
-          magnetT.getAttribute('port-group') === 'in'
-        )
-          return false;
-        // Prevent linking to input ports.
+        // Prevent linking from output ports to input ports within one element
+        if (cellViewS === cellViewT) return false;
+        // Prevent linking to output ports
         return magnetT && magnetT.getAttribute('port-group') === 'in';
       },
-    });
-    let node = new joint.shapes.standard.Circle();
-    node.position(100, 30);
-    node.resize(75, 75);
-    node.attr({
-      body: {
-        fill: 'orange',
-        stroke: 'black',
-        strokeWidth: 2,
-      },
-      label: {
-        text: 'R(s)',
-        fill: 'white',
+      validateMagnet: function (cellView: any, magnet: any) {
+        // Note that this is the default behaviour. It is shown for reference purposes.
+        // Disable linking interaction for magnets marked as passive
+        return magnet.getAttribute('magnet') !== 'passive';
       },
     });
-    let node2 = new joint.shapes.standard.Circle();
-    node2.position(innerWidth - 400, 30);
-    node2.resize(75, 75);
-    node2.attr({
-      body: {
-        fill: 'green',
-        stroke: 'black',
-        strokeWidth: 2,
+    
+    var portsIn = {
+      position: {
+        name: 'left',
       },
-      label: {
-        text: 'C(s)',
-        fill: 'white',
+      attrs: {
+        portBody: {
+          magnet: 'passive',
+          r: 10,
+          fill: '#023047',
+          stroke: '#023047',
+        },
       },
-    });
-
-    var port1 = {
       label: {
         position: {
           name: 'left',
+          args: { y: 6 },
         },
         markup: [
           {
             tagName: 'text',
             selector: 'label',
+            className: 'label-text',
           },
         ],
-      },
-      attrs: {
-        portBody: {
-          magnet: true,
-          r: 10,
-          fill: '#023047',
-          stroke: '#023047',
-        },
       },
       markup: [
         {
@@ -101,25 +86,31 @@ export class AppComponent {
         },
       ],
     };
-    var port2 = {
+
+    var portsOut = {
+      position: {
+        name: 'right',
+      },
+      attrs: {
+        portBody: {
+          magnet: true,
+          r: 10,
+          fill: '#E6A502',
+          stroke: '#023047',
+        },
+      },
       label: {
         position: {
           name: 'right',
+          args: { y: 6 },
         },
         markup: [
           {
             tagName: 'text',
             selector: 'label',
+            className: 'label-text',
           },
         ],
-      },
-      attrs: {
-        portBody: {
-          magnet: true,
-          r: 10,
-          fill: '#023047',
-          stroke: '#023047',
-        },
       },
       markup: [
         {
@@ -128,38 +119,112 @@ export class AppComponent {
         },
       ],
     };
-    node.addPort(port1);
-    node2.addPort(port2);
-    node.addTo(this.graph);
-    node2.addTo(this.graph);
 
-    let toolview = new joint.dia.ToolsView({
-      tools: [new joint.elementTools.Remove()],
+    var model = new joint.shapes.standard.Circle({
+      position: { x: 125, y: 50 },
+      size: { width: 90, height: 90 },
+      attrs: {
+        root: {
+          magnet: false,
+        },
+        body: {
+          fill: '#8ECAE6',
+        },
+        label: {
+          text: 'Model',
+          fontSize: 16,
+          y: -10,
+        },
+      },
+      ports: {
+        groups: {
+          in: portsIn,
+          out: portsOut,
+        },
+      },
     });
-    let toolview2 = new joint.dia.ToolsView({
-      tools: [new joint.elementTools.Remove()],
+
+    model.addPorts([
+      {
+        group: 'in',
+        attrs: { label: { text: 'in' } },
+      },
+      {
+        group: 'out',
+        attrs: { label: { text: 'out' } },
+      },
+    ]);
+
+    var model2 = model.clone().translate(300, 0).attr('label/text', 'C(s)');
+
+    this.graph.addCells(model, model2);
+
+    // Register events
+    this.paper.on('link:mouseenter', (linkView: any) => {
+      showLinkTools(linkView);
     });
-    node.findView(paper).addTools(toolview);
-    node2.findView(paper).addTools(toolview2);
-    paper.on('element:mouseenter', function (elementView: any) {
-      elementView.showTools();
+
+    this.paper.on('link:mouseleave', (linkView: any) => {
+      linkView.removeTools();
     });
-    paper.on('element:mouseleave', function (elementView: any) {
-      elementView.hideTools();
-    });
-    paper.on('element:pointerclick', function (elementView: any) {
-      console.log(elementView.model.attributes.attrs.label.text);
-      console.log(elementView.model.attributes.position);
-    });
-    paper.on('link:mouseenter', function (linkView: any) {
-      linkView.showTools();
-    });
-    paper.on('link:mouseleave', function (linkView: any) {
-      linkView.hideTools();
-    });
+
+    // Actions
+    function showLinkTools(linkView: any) {
+      var tools = new joint.dia.ToolsView({
+        tools: [
+          new joint.linkTools.Remove({
+            distance: '50%',
+            markup: [
+              {
+                tagName: 'circle',
+                selector: 'button',
+                attributes: {
+                  r: 7,
+                  fill: '#f6f6f6',
+                  stroke: '#ff5148',
+                  'stroke-width': 2,
+                  cursor: 'pointer',
+                },
+              },
+              {
+                tagName: 'path',
+                selector: 'icon',
+                attributes: {
+                  d: 'M -3 -3 3 3 M -3 3 3 -3',
+                  fill: 'none',
+                  stroke: '#ff5148',
+                  'stroke-width': 2,
+                  'pointer-events': 'none',
+                },
+              },
+            ],
+          }),
+        ],
+      });
+      linkView.addTools(tools);
+    }
   }
+
   addNode() {
-    this.nodeCr = '';
+    this.paper.on('blank:pointerdown', (evt: any, x: any, y: any) => {
+      if (this.nodeCr === '') return;
+      let rect = new joint.shapes.standard.Circle();
+      rect.position(x, y);
+      rect.resize(60, 60);
+      rect.attr({
+        body: {
+          fill: 'white',
+          stroke: 'black',
+          strokeWidth: 2,
+        },
+        label: {
+          text: this.nodeCr,
+          fill: 'black',
+        },
+      });
+      rect.addTo(this.graph);
+      this.nodeCr = '';
+    });
   }
 
   Solve(): any {
