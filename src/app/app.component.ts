@@ -172,7 +172,7 @@ export class AppComponent {
       var tools = new joint.dia.ToolsView({
         tools: [
           new joint.linkTools.Remove({
-            distance: '50%',
+            distance: '40%',
             markup: [
               {
                 tagName: 'circle',
@@ -197,10 +197,12 @@ export class AppComponent {
                 },
               },
             ],
-          }),
+          }),new joint.linkTools.Vertices(),new joint.linkTools.Segments()
         ],
       });
+
       linkView.addTools(tools);
+      linkView.showTools();
     }
     var toolsView = new joint.dia.ToolsView({
       tools: [new joint.elementTools.Remove()],
