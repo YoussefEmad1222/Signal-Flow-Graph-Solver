@@ -37,8 +37,6 @@
   box-sizing: border-box;
 }
 
-/* Path: signal\src\app\header\header.component.html */
-
 .solve {
   display: flex;
   flex-direction: row;
