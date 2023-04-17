@@ -6,53 +6,7 @@
       </div>
       <div><button (click)="addNode()">create a node</button></div>
     </div>
-
-    <div class="edge">
-      <div>
-        <input type="text" placeholder="form" [(ngModel)]="edgeFromCr" />
-      </div>
-      <div><input type="text" placeholder="to" [(ngModel)]="edgeToCr" /></div>
-      <div>
-        <input type="text" placeholder="edge value" [(ngModel)]="edgeValCr" />
-      </div>
-      <div><button (click)="addEdge()">create an edge</button></div>
-    </div>
   </div>
-
-  <div class="edit">
-
-
-    <div class="node-edit">
-      <div>
-        <input type="text" placeholder="node name" [(ngModel)]="oldNodeName" />
-      </div>
-      <div>
-        <input
-          type="text"
-          placeholder="New Node name"
-          [(ngModel)]="newNodeName"
-        />
-      </div>
-      <div><button (click)="editNode()">edit a node</button></div>
-    </div>
-
-
-
-    <div class="edge-edit">
-      <div><input type="text" placeholder="form" [(ngModel)]="edgeFrom" /></div>
-      <div><input type="text" placeholder="to" [(ngModel)]="edgeTo" /></div>
-      <div>
-        <input
-          type="text"
-          placeholder="New edge value"
-          [(ngModel)]="newEdgeVal"
-        />
-      </div>
-      <div><button (click)="editEdge()">edit an edge</button></div>
-    </div>
-
-  </div>
-
 
   <div class="solve">
     <div class="node">
@@ -63,9 +17,7 @@
       <div><button (click)="Solve()">solve</button></div>
     </div>
   </div>
-
 </div>
-
 
 <div id="draw"></div>
 
