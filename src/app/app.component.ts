@@ -53,17 +53,11 @@ export class AppComponent {
     });
     this.graph.addCell(node);
     this.graph.addCell(node2);
-    let boundary = new joint.elementTools.Boundary();
-    let remove = new joint.elementTools.Remove();
     let toolview = new joint.dia.ToolsView({
-      tools: [
-        new joint.elementTools.Remove(),
-      ],
+      tools: [new joint.elementTools.Remove()],
     });
     let toolview2 = new joint.dia.ToolsView({
-      tools: [
-        new joint.elementTools.Remove(),
-      ],
+      tools: [new joint.elementTools.Remove()],
     });
     node.findView(paper).addTools(toolview);
     node2.findView(paper).addTools(toolview2);
@@ -73,8 +67,11 @@ export class AppComponent {
     paper.on('element:mouseleave', function (elementView: any) {
       elementView.hideTools();
     });
+    paper.on('element:pointerclick', function (elementView: any) {
+      console.log(elementView.model.attributes.attrs.label.text);
+    });
+    
   }
-
   addNode() {
     this.nodeCr = '';
   }
