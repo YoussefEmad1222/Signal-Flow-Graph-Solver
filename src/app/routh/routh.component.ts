@@ -29,16 +29,17 @@ export class RouthComponent {
       number[i] = i;
     }
     this.entered = true;
-  }
-  takeInput(value: any,index: any) {
-   this.values[index] = +value;
-  }
-   solve() {
-    console.log(this.values);
     this.table = new Array(this.numInputs);
     for (let i = 0; i < this.numInputs; i++) {
       this.table[i] = new Array(3);
       this.table[i].fill(0);
     }
+  }
+  takeInput(value: any, index: any) {
+    this.values[index] = +value;
+  }
+  solve() {
+    console.log(this.values);
+    let n = this.numInputs;
   }
 }

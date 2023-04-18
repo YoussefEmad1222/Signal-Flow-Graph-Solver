@@ -1,28 +1,38 @@
 <div class="routh">
   <div class="inputs">
-    <input type="number" #degree placeholder="Enter degree">
-    <button (click)=" takeinput(degree.value)" type="submit">submit</button>
-    <button (click)="solve()" >solve</button>
+    <input type="number" #degree placeholder="Enter degree" />
+    <button (click)="takeinput(degree.value)" type="submit">submit</button>
+    <button (click)="solve()">solve</button>
   </div>
   <div class="values" *ngIf="entered">
-    <div *ngFor="let value of values;let i=index">
-      <var>S<sup>{{values.length-i-1}}</sup></var><input #val (blur)="takeInput(val.value,i)"  type="number" placeholder="Enter value">
+    <div *ngFor="let value of values; let i = index">
+      <var
+        >S<sup>{{ values.length - i - 1 }}</sup></var
+      ><input
+        #val
+        (blur)="takeInput(val.value, i)"
+        type="number"
+        placeholder="Enter value"
+      />
     </div>
   </div>
-  <table>
-    <tr>
-      <th>degree</th>
-      <th>value 1</th>
-      <th>value 2</th>
-      <th>value 3</th>
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th>degree</th>
+        <th>value 1</th>
+        <th>value 2</th>
+        <th>value 3</th>
+      </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let val of table; let j = index">
+      <td>{{ table.length - j - 1 }}</td>
+      <td>{{ val[0] }}</td>
+      <td>{{ val[1] }}</td>
+      <td>{{ val[2] }}</td>
     </tr>
-    <tr *ngFor="let val of table;let j=index">
-      <td>{{table.length-j-1}}</td>
-      <td>{{val[0]}}</td>
-      <td>{{val[1]}}</td>
-      <td>{{val[2]}}</td>
-
-    </tr>
+    </tbody>
   </table>
 </div>
 <!-- (blur)="takeInput(val.value,i)" -->
