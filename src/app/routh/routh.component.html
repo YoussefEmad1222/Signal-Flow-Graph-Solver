@@ -1,0 +1,11 @@
+<div>
+  <div class="inputs">
+    <input type="number" #degree placeholder="Enter degree">
+    <button (click)="takeinput(degree.value)" type="submit">submit</button>
+  </div>
+  <div *ngIf="entered">
+    <div *ngFor="let value of values;let i=index">
+      <input type="number" #value placeholder="Enter value">
+    </div>
+  </div>
+</div>

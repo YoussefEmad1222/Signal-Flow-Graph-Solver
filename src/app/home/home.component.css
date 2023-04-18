@@ -1,0 +1,81 @@
+/* Reset some default styles for better consistency */
+body, h1, h2, p {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+header {
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 50px;
+  margin-bottom: 10px;
+}
+
+nav ul {
+  list-style-type: none;
+}
+
+nav li {
+  display: inline;
+  margin-right: 10px;
+}
+
+nav a {
+  text-decoration: none;
+  color: #333;
+}
+
+main {
+  padding: 20px;
+}
+
+section {
+  margin-bottom: 60px;
+  margin-top: 20px;
+
+  text-align: center; /* Center align the content within each section */
+}
+
+h2 {
+  margin-bottom: 10px;
+}
+
+p {
+  line-height: 1.5;
+  /* Set word-wrap property to break words when they exceed the available width */
+  word-wrap: break-word;
+  max-width: 500px; /* Adjust max-width to desired limit */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.footer {
+  background-color: #f2f2f2;
+  padding: 20px;
+  text-align: center;
+}
+
+.button {
+  display: inline-block;
+  padding: 15px 30px; /* Increase padding for larger buttons */
+  font-size: 18px; /* Increase font size for larger buttons */
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  margin-top: 10px;
+  /* Center align the buttons */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
