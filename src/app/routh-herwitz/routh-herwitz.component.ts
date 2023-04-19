@@ -11,6 +11,7 @@ export class RouthHerwitzComponent {
   private first: Array<string>;
   private second: Array<string>;
   private steps: Array<string[]>;
+  private done: number;
 
   constructor(coff : Array<number>) {
     let first_start = true;
@@ -18,9 +19,12 @@ export class RouthHerwitzComponent {
     this.second = Array<string>(ceil(coff.length/2));
     let step = Array<string>(ceil(coff.length/2));
     this.steps = Array<string[]>(coff.length);
+    this.second[this.second.length-1] = "0";
+    this.done = 0;
     for (let i = 0; i < step.length; i++) {
       this.first[i] = String(coff[i*2]);
       if (i*2!=coff.length-2) this.second[i] = String(coff[i*2+1]);
+      if (this.second[i]=="0") this.done++;
       step[i] = "0"
     }
     for (let i = 0; i < coff.length; i++) this.steps[i] = step;
@@ -33,6 +37,7 @@ export class RouthHerwitzComponent {
     if (this.second[0] == "0") this.second[0] = Number(this.first[0])>0 ? "p" : "n" ;
     else if (Number(this.second[0])/abs(Number(this.second[0]))!=Number(this.first[0])/abs(Number(this.first[0]))) changes++;
     this.steps[0] = this.first;
+    if (this.done==this.second.length) return [changes, this.steps];
     this.steps[1] = this.second;
     for (let i=0; i < this.steps.length - 2 && !done; i++) {
       if (alternate) wanted--;
