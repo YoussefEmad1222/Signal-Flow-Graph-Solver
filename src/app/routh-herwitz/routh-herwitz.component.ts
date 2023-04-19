@@ -66,6 +66,6 @@ export class RouthHerwitzComponent {
         second = next;
     }
     if (all_real) return changes;
-    
+    return 0;
   }
 }
