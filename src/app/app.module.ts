@@ -10,10 +10,15 @@ import { RouthHerwitzComponent } from './routh-herwitz/routh-herwitz.component';
 import { HomeComponent } from './home/home.component';
 
 @NgModule({
-  declarations: [AppComponent, GraphComponent, RouthComponent, HomeComponent, RouthHerwitzComponent],
-  imports: [BrowserModule, HttpClientModule, AppRoutingModule,FormsModule],
+  declarations: [
+    AppComponent,
+    GraphComponent,
+    RouthComponent,
+    HomeComponent,
+    RouthHerwitzComponent,
+  ],
+  imports: [BrowserModule, HttpClientModule, AppRoutingModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent],
 })
-
 export class AppModule {}

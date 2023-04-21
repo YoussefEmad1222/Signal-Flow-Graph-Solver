@@ -1,43 +1,39 @@
 <div class="container">
-
-  <div class="operations" style="z-index: 100;">
-      <button (click)="addNode()" style="margin-left: 30px;">Add node</button>
-      <input id="from-in" type="text" placeholder="from"/>
-      <input id="to-in" type="text" placeholder="to"/>
-      <input id="gain-in" type="text" placeholder="gain"/>
-      <button (click)="addLink()">Add gain</button>
-      <button (click)="solve()" style="margin-right: 30px;">Solve</button>
+  <div class="operations" style="z-index: 100">
+    <button (click)="addNode()" style="margin-left: 30px">Add node</button>
+    <input id="from-in" type="text" placeholder="from" />
+    <input id="to-in" type="text" placeholder="to" />
+    <input id="gain-in" type="text" placeholder="gain" />
+    <button (click)="addLink()">Add gain</button>
+    <button (click)="solve()" style="margin-right: 30px">Solve</button>
   </div>
 
   <div id="paper"></div>
 
   <div *ngIf="results" class="results">
-      <details style="padding-top: 2%;">
-          <summary>Overall Transfer Fuction :</summary>
-          <p></p>
-      </details>
-      <details>
-          <summary>Forward Paths :</summary>
-          <p></p>
-      </details>
-      <details>
-          <summary>Loops :</summary>
-          <p></p>
-      </details>
-      <details>
-          <summary>Non Touching loops :</summary>
-          <p></p>
-      </details>
-      <details>
-          <summary>Delta :</summary>
-          <p></p>
-      </details>
-      <details style="padding-bottom: 2%;">
-          <summary>Deltas :</summary>
-          <p></p>
-      </details>
+    <details style="padding-top: 2%">
+      <summary>Overall Transfer Fuction :</summary>
+      <p></p>
+    </details>
+    <details>
+      <summary>Forward Paths :</summary>
+      <p></p>
+    </details>
+    <details>
+      <summary>Loops :</summary>
+      <p></p>
+    </details>
+    <details>
+      <summary>Non Touching loops :</summary>
+      <p></p>
+    </details>
+    <details>
+      <summary>Delta :</summary>
+      <p></p>
+    </details>
+    <details style="padding-bottom: 2%">
+      <summary>Deltas :</summary>
+      <p></p>
+    </details>
   </div>
-
-
 </div>
-
