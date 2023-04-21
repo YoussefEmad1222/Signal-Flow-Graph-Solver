@@ -45,7 +45,7 @@ export class RouthComponent {
       coff[i] = this.values[i];
     }
     let routh = new RouthHerwitzComponent([ 40, 100, 60, 90, 70, 40]);
-    let result=routh.solve();
+    let result=routh.Solve();
     console.log(result);
 
 
