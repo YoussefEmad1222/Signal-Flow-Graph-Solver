@@ -9,8 +9,13 @@ import { RouthHerwitzComponent } from 'app/routh-herwitz/routh-herwitz.component
 export class RouthComponent {
   numInputs: any;
   values: number[] = [];
+  cols:any;
   entered: boolean = false;
   table: any;
+  state: string= 'stable';
+  changes: number = 0;
+  solved: boolean = false;
+
   takeinput(value: any) {
     if (this.entered) {
       this.values = [];
@@ -44,8 +49,18 @@ export class RouthComponent {
     for (let i = 0; i < this.numInputs; i++) {
       coff[i] = this.values[i];
     }
-    let routh = new RouthHerwitzComponent([40, 100, 60, 90, 70, 40]);
-    let result = routh.Solve();
-    console.log(result);
+    let routh = new RouthHerwitzComponent([40, 100, 60, 90, 70, 40, 20, 10, 5, 1]);
+
+    let result:[number, Array<string[]>] = routh.Solve();
+
+    console.log(result[1][0].length);
+    this.cols = new Array(result[1][0].length);
+    for (let i = 0; i < result[1][0].length; i++) {
+      this.cols[i] = i;
+    }
+    this.table = result[1];
+    this.state = result[0] == 0 ? 'stable' : 'unstable';
+    this.changes = result[0];
+    this.solved = true;
   }
 }

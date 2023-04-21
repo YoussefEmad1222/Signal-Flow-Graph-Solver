@@ -1,6 +1,6 @@
 import { TypeofExpr } from '@angular/compiler';
 import { Component } from '@angular/core';
-import { abs, ceil, floor, number, string } from 'mathjs';
+import { abs, ceil, floor, number, sec, string } from 'mathjs';
 
 @Component({
   selector: 'app-routh-herwitz',
@@ -23,28 +23,31 @@ export class RouthHerwitzComponent {
     this.done = 0;
     for (let i = 0; i < step.length; i++) {
       this.first[i] = String(coff[i*2]);
-      if (i*2!=coff.length-2) this.second[i] = String(coff[i*2+1]);
+      if (i*2!=coff.length-1) this.second[i] = String(coff[i*2+1]);
       if (this.second[i]=="0") this.done++;
       step[i] = "0"
     }
     for (let i = 0; i < coff.length; i++) this.steps[i] = step;
   }
 
-  Solve() {
+   Solve():[number, Array<string[]>] {
     let done = false, alternate = false, all_zero = true;
     let changes = 0, wanted = this.first.length - 1;
     this.first.length > this.second.length ? this.second[this.second.length-1] = "0" : alternate = true;
     if (this.second[0] == "0") this.second[0] = Number(this.first[0])>0 ? "p" : "n" ;
     else if (Number(this.second[0])/abs(Number(this.second[0]))!=Number(this.first[0])/abs(Number(this.first[0]))) changes++;
+    console.log(this.first, this.second);
     this.steps[0] = this.first;
     if (this.done==this.second.length) return [changes, this.steps];
     this.steps[1] = this.second;
     for (let i=0; i < this.steps.length - 2 && !done; i++) {
-      if (alternate) wanted--;
+      if (alternate && i!=0) wanted--;
       alternate = !alternate;
-      var next : Array<string> = [];
-      for (let j=1; j < wanted; j++) {
+      var next : Array<string> = new Array<string>(this.first.length);
+      next.fill("0");
+      for (let j=1; j < wanted+1; j++) {
         if (isNaN(Number(this.second[0]))) {
+          console.log("here " + this.second[0]);
           if (isNaN(Number(this.second[j]))) {
             if (isNaN(Number(this.first[0]))) {
               if (isNaN(Number(this.first[j]))) {
@@ -277,18 +280,20 @@ export class RouthHerwitzComponent {
         } else {                                          //All are numbers
           let x = Number(this.second[0]) * Number(this.first[j]) - Number(this.second[j]) * Number(this.first[0]);
           if (x==0&&j==1) next[j-1] = Number(this.second[0])>0 ? "p" : "n";
+          else if (this.first[0]=="0" || this.second[j]=="0") next[j-1] = this.first[j];
           else next[j-1] = String(x/Number(this.second[0]));
         }
       }
-      for (let j=wanted-1; j >= 0; j++) {
+      for (let j=wanted-1; j >= 0; j--) {
         if (isNaN(Number(next[j]))&&next[j].toLowerCase()==next[j]) {
           if (j != 0 || all_zero) {
             next[j] = "0";
             if (j==0) done = true;
           }
         } else all_zero = false;
-        this.steps[i][j] = next[j];
+
       }
+      this.steps[i+2] = next;
       all_zero = true;
       this.first = this.second;
       this.second = next;
@@ -301,6 +306,7 @@ export class RouthHerwitzComponent {
         if (Number(this.first[0])>0&&this.second[0].toLowerCase()=="p"||Number(this.first[0])<0&&this.second[0].toLowerCase()=="n") changes++;
       } else if (Number(this.second[0])/abs(Number(this.second[0]))!=Number(this.first[0])/abs(Number(this.first[0]))) changes++;
     }
-    return [changes, this.steps];
+    let ans:[number, Array<string[]>]= [changes, this.steps];
+    return ans;
   }
 }
