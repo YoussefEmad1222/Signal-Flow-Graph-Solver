@@ -1,11 +1,18 @@
 /* Reset some default styles for better consistency */
-body, h1, h2, p {
+body,
+h1,
+h2,
+p {
   margin: 0;
   padding: 0;
 }
 
 body {
   font-family: Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+  background-color: #fff;
 }
 
 header {
@@ -30,6 +37,7 @@ nav li {
 nav a {
   text-decoration: none;
   color: #333;
+  font-weight: bold;
 }
 
 main {
@@ -39,12 +47,12 @@ main {
 section {
   margin-bottom: 60px;
   margin-top: 20px;
-
   text-align: center; /* Center align the content within each section */
 }
 
 h2 {
   margin-bottom: 10px;
+  font-size: 30px;
 }
 
 p {
@@ -64,6 +72,7 @@ p {
 
 .button {
   display: inline-block;
+  border-radius: 4px;
   padding: 15px 30px; /* Increase padding for larger buttons */
   font-size: 18px; /* Increase font size for larger buttons */
   background-color: #007bff;
@@ -71,6 +80,7 @@ p {
   text-decoration: none;
   font-weight: bold;
   margin-top: 10px;
+  text-align: center;
   /* Center align the buttons */
   margin-left: auto;
   margin-right: auto;
@@ -78,4 +88,9 @@ p {
 
 .button:hover {
   background-color: #0056b3;
+}
+.button:active {
+  background-color: #0056b3;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
 }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { RouthHerwitzComponent } from 'app/routh-herwitz/routh-herwitz.component';
 
 @Component({
   selector: 'app-routh',
@@ -39,7 +40,14 @@ export class RouthComponent {
     this.values[index] = +value;
   }
   solve() {
-    console.log(this.values);
-    let n = this.numInputs;
+    let coff = new Array(this.numInputs);
+    for (let i = 0; i < this.numInputs; i++) {
+      coff[i] = this.values[i];
+    }
+    let routh = new RouthHerwitzComponent([ 40, 100, 60, 90, 70, 40]);
+    let result=routh.solve();
+    console.log(result);
+
+
   }
 }
