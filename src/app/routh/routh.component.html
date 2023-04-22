@@ -20,21 +20,22 @@
     <thead>
       <tr>
         <th>degree</th>
-        <th *ngFor="let col of cols"> {{ col }}</th>
+        <th *ngFor="let col of cols">{{ col }}</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let val of table; let j = index">
-        <td>s<sup>{{ table.length - j - 1 }}</sup></td>
+        <td>
+          s<sup>{{ table.length - j - 1 }}</sup>
+        </td>
         <td *ngFor="let v of val">{{ v }}</td>
       </tr>
     </tbody>
   </table>
   <div *ngIf="solved">
-    <p>this system is {{state}}</p>
-    <p>the number of roots with real positive is {{changes}}</p>
+    <p>this system is {{ state }}</p>
+    <p>the number of roots with real positive is {{ changes }}</p>
   </div>
-
 </div>
 
 <!-- (blur)="takeInput(val.value,i)" -->
