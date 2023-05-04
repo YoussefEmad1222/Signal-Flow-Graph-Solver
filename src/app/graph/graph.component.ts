@@ -17,10 +17,13 @@ export class GraphComponent {
   id: number = 2;
   model: any;
   results: any = false;
-  adjList: Map<string, node[] | undefined> = new Map<string , node[] | undefined> ;
-  distination : number  = 2
+  adjList: Map<string, node[] | undefined> = new Map<
+    string,
+    node[] | undefined
+  >();
+  distination: number = 2;
   ngOnInit() {
-    this.adjList = new Map<string, node[] | undefined>;
+    this.adjList = new Map<string, node[] | undefined>();
     this.graph = new joint.dia.Graph();
     this.paper = new joint.dia.Paper({
       el: document.getElementById('paper'),
@@ -29,7 +32,7 @@ export class GraphComponent {
       height: innerHeight,
       snapLabels: true,
       background: {
-        color: '#c4cbcb',
+        color: '#F8F9F9',
       },
       interactive: {
         linkMove: true,
@@ -135,9 +138,9 @@ export class GraphComponent {
         },
         body: {
           fill: '#E74C3C',
-          rx: 20,
-          ry: 20,
-          strokeWidth: 2,
+          rx: 30,
+          ry: 30,
+          strokeWidth: 1,
         },
         label: {
           text: '1',
@@ -165,7 +168,6 @@ export class GraphComponent {
       },
     ]);
     this.graph.addCell(model);
-
     var model2 = model.clone().translate(300, 0).attr('label/text', '2');
     model2.set('id', '2');
     this.graph.addCell(model2);
@@ -243,7 +245,6 @@ export class GraphComponent {
   }
 
   addNode() {
-   
     let newNode = this.model
       .clone()
       .translate(200, 200)
@@ -349,19 +350,19 @@ export class GraphComponent {
   solve() {
     this.results = true;
     console.log(this.adjList);
-    var operation= new operations(this.adjList);
+    var operation = new operations(this.adjList);
     var temp_distination = this.distination;
-    if(temp_distination != 2){
+    if (temp_distination != 2) {
       temp_distination--;
     }
-    console.log(operation.getforwardpathes("1" , temp_distination.toString()));
-    console.log(operation.getforwardgains("1" , temp_distination.toString()));
+    console.log(operation.getforwardpathes('1', temp_distination.toString()));
+    console.log(operation.getforwardgains('1', temp_distination.toString()));
     operation.getcycles();
     console.log(operation.getcycleslist());
     console.log(operation.getcyclesgain());
     operation.calc_nontouchingloops();
     console.log(operation.getnontouchingloops());
-    console.log("start");
+    console.log('start');
     console.log(operation.denominator());
     console.log(operation.numerator());
   }
