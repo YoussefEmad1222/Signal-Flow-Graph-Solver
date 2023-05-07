@@ -27,10 +27,13 @@ export class GraphComponent {
   forwardgains:any;
   cycles:any;
   cyclesgain:any;
-  nontouchingloops:any;
+  nontouchingloops: number[][][] = [];
   deltas:any;
   numerator:any;
   denominator:any;
+  result:any;
+  value1: any;
+  value0:any;
   ngOnInit() {
     this.adjList = new Map<string, node[] | undefined>();
     this.graph = new joint.dia.Graph();
@@ -366,28 +369,47 @@ export class GraphComponent {
     }
     console.log("forward pathes");
     this.forwardpaths = operation.getforwardpathes('1', temp_distination.toString());
-    console.log(operation.getforwardpathes('1', temp_distination.toString()));
+    console.log(this.forwardpaths);
     console.log("forward gains");
     this.forwardgains = operation.getforwardgains('1', temp_distination.toString());
-    console.log(operation.getforwardgains('1', temp_distination.toString()));
+    console.log(this.forwardgains);
     operation.getcycles();
     console.log("cycles");
     this.cycles = operation.getcycleslist();
-    console.log(operation.getcycleslist());
+    console.log(this.cycles);
     console.log("cyclesgain");
     this.cyclesgain = operation.getcyclesgain();
-    console.log(operation.getcyclesgain());
+    console.log(this.cyclesgain);
     operation.calc_nontouchingloops();
     console.log("nontouchingloops");
-    this.nontouchingloops = operation.getnontouchingloops();
-    console.log(operation.getnontouchingloops());
+    //this.nontouchingloops = operation.getnontouchingloops();
+    //console.log(operation.getnontouchingloops());
     console.log('start');
     this.deltas=operation.getdeltas();
-    console.log(operation.getdeltas());
+    console.log(this.deltas);
     console.log('end');
     this.denominator=operation.denominator();
-    console.log(operation.denominator());
+    this.value0=operation.getvalueOfDenominator();
+    console.log(this.value0);
+    console.log(this.denominator);
+    let non=operation.getvalueOfnontouchingloops();
+    console.log(non);
+    for (let index = 0; index < non.length; index++) {
+      for (let k = 0; k < non[index].length; k++) {
+        for (let j = 0; j < non[index][k].length; j++) {
+          non[index][k][j]++;
+        }
+
+      }
+
+    }
+    this.nontouchingloops=non;
+    console.log(this.nontouchingloops);
+
     this.numerator=operation.numerator();
-    console.log(operation.numerator());
+    console.log(this.numerator);
+    this.value1=operation.getvalueOfnumerator();
+    console.log(this.value1);
+    this.result=this.value1/this.value0;
   }
 }

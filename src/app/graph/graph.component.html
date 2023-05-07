@@ -13,35 +13,36 @@
   <div *ngIf="results" class="results">
     <details style="padding-top: 2%">
       <summary>Overall Transfer Fuction :</summary>
-      <p>{{numerator}}/{{denominator}}</p>
+      <p>{{numerator}}/{{denominator}}={{result}}</p>
     </details>
     <details>
       <summary>Forward Paths :</summary>
-       <p *ngFor="let path of forwardpaths">
-        <li style="font-size: larger">
+       <p>
+        <li style="font-size: larger; list-style: numbers;" *ngFor="let path of forwardpaths" >
           {{path}}
         </li>
       </p>
     </details>
     <details>
       <summary>Loops :</summary>
-      <p *ngFor="let loop of cycles">
-        <li style="font-size: larger">
+      <p>
+        <li style="font-size: larger; list-style: numbers;" *ngFor="let loop of cycles">
           {{loop}}
         </li>
       </p>
     </details>
     <details>
       <summary>Non Touching loops :</summary>
-      <p *ngFor="let non of nontouchingloops">
-        <li style="font-size: larger">
-          {{non}}
+      <p *ngFor="let nontouchingloop of nontouchingloops; let i=index">
+        <span>{{i+2}} non touching loops:</span>
+        <li style="font-size: larger; list-style: numbers;" *ngFor="let loop of nontouchingloop">
+            {{loop}}
         </li>
       </p>
     </details>
     <details>
       <summary>Delta :</summary>
-      <p></p>
+      <p>{{value0}}</p>
     </details>
     <details style="padding-bottom: 2%">
       <summary>Deltas :</summary>

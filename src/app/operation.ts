@@ -11,7 +11,10 @@ export class operations{
     private loopslist : String[][]
     private loopsgain : String[][]
     private nontouchingloops : number[][]
+    private nontouchingloopsvalue : number[][][]
     private deltas : String[]
+    private value1 : number
+    private value2 : number
     constructor(adjlist :Map<string , node[] | undefined>){
         this.adjlist = adjlist;
         this.pathgain = [];
@@ -22,6 +25,9 @@ export class operations{
         this.temppathgain = [];
         this.temppathlist = [];
         this.deltas = [];
+        this.value1 = 0;
+        this.value2 = 0;
+        this.nontouchingloopsvalue =[];
     }
 
 
@@ -209,19 +215,29 @@ export class operations{
 
     denominator(){
         var s = "1 ";
+        this.value1 = 1;
         if(this.loopslist.length){
             s += "- (";
         }
+        var temp = 0;
         for(let i = 0 ; i <  this.loopslist.length ; i++){
+            var temp2 = 0;
             for(let j = 0 ; j < this.loopsgain[i].length ; j++){
                 s += this.loopsgain[i][j];
+                if(j == 0){
+                    temp2 += Number(this.loopsgain[i][j]);
+                }else{
+                    temp2 *= Number(this.loopsgain[i][j]);
+                }
                 if(j != this.loopsgain[i].length-1){
                     s+= "*";
                 }else if(i != this.loopslist.length -1){
                     s+= "+";
                 }
             }
+            temp += temp2;
             if(i == this.loopslist.length -1){
+                this.value1 -= temp;
                 s += ")"
             }
         }
@@ -230,30 +246,45 @@ export class operations{
         while (true) {
           let array =this.helpingFind_nontouching(i);
           if (array.length == 0) break;
+          const loop = array.slice();
+          this.nontouchingloopsvalue.push(loop);
           var s2 = "(";
+          var temp = 0;
           for(let i = 0; i <  array.length ; i++){
+            var temp2 = 0;
             for(let x = 0 ; x <  array[i].length ; x++){
                 for(let j = 0 ; j < this.loopsgain[array[i][x]].length ; j++){
                     s2 += this.loopsgain[array[i][x]][j];
+                    if(j == 0 && x == 0){
+                        temp2 += Number(this.loopsgain[array[i][x]][j]);
+                    }else{
+                        temp2 *= Number(this.loopsgain[array[i][x]][j]);
+                    }
                     if(j != this.loopsgain[array[i][x]].length-1 || (j == this.loopsgain[array[i][x]].length-1 && x!= array[i].length-1)){
                         s2+= "*";
                     }
                 }
+
+                console.log(temp2 , temp );
                 if(x == array[i].length-1 && i != array.length-1){
                     s2 += "+ ";
                 }
             }
+            temp += temp2
             if(i == array.length -1 ){
                 s2+= ")";
-            }else{
-
             }
           }
           if(s2.length>0){
-            if (i%2)
-              s += "- " + s2;
-            else
-              s += "+ " + s2;
+            if (i%2){
+              this.value1 -= temp;
+                s += "- " + s2;
+            }
+            else{
+                this.value1 += temp;
+                s += "+ " + s2;
+            }
+            console.log(this.value1);
           }
           i++;
         }
@@ -270,12 +301,18 @@ export class operations{
         {
             this.loopslist = [];
             this.loopsgain = [];
+            var temp = 0;
             s+= "("
             for(var x = 0 ; x <  this.pathgain[i].length; x++){
-              if(x===this.pathgain[i].length-1){
+                if(x == 0){
+                    temp += Number(this.pathgain[i][x]);
+                }else{
+                    temp *= Number(this.pathgain[i][x]);
+                }
                 s+= this.pathgain[i][x];
-              }
-              else s+= this.pathgain[i][x]+ "*";
+                if(x != this.pathgain[i].length-1){
+                    s+= "*"
+                }
             }
             s += ")"
 
@@ -294,7 +331,9 @@ export class operations{
                 }
             }
             if(this.loopslist.length >= 1){
+
                 s+= "*(" + this.denominator() + ") ";
+                this.value2 += temp*this.value1;
                 this.deltas.push(this.denominator());
             }else{
                 this.deltas.push("1");
@@ -307,6 +346,18 @@ export class operations{
 
 
 
+    }
+
+    getvalueOfDenominator(){
+        return this.value1;
+    }
+
+    getvalueOfnumerator(){
+        return this.value2;
+    }
+
+    getvalueOfnontouchingloops(){
+        return this.nontouchingloopsvalue;
     }
 
     getdeltas(){
