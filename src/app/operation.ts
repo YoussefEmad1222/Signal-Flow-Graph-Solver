@@ -4,13 +4,13 @@ import { inArray } from "jquery";
 
 export class operations{
     private adjlist = new Map<string , node[] | undefined>()
-    private pathlist : String[][] 
-    private pathgain : String[][] 
+    private pathlist : String[][]
+    private pathgain : String[][]
     private temppathlist : String[][]
-    private temppathgain : String[][] 
-    private loopslist : String[][] 
-    private loopsgain : String[][] 
-    private nontouchingloops : number[][] 
+    private temppathgain : String[][]
+    private loopslist : String[][]
+    private loopsgain : String[][]
+    private nontouchingloops : number[][]
     private deltas : String[]
     constructor(adjlist :Map<string , node[] | undefined>){
         this.adjlist = adjlist;
@@ -24,7 +24,7 @@ export class operations{
         this.deltas = [];
     }
 
-     
+
     getforwardpathes(source : string , distinaton : string) : String[][]{
         this.getpathes(source , distinaton);
         this.pathlist = this.temppathlist;
@@ -36,7 +36,7 @@ export class operations{
 
     getforwardgains(source : string , distinaton : string) : String[][]{
         this.pathlist = this.getforwardpathes(source , distinaton);
-        return this.pathgain;    
+        return this.pathgain;
     }
 
     getpathes(source : string , distinaton : string){
@@ -64,7 +64,7 @@ export class operations{
                 for(let child of this.adjlist.get(vertex) as node[] ){
                     var c = child.name  , v = child.weight;
                     if(c != vertex && !visited.get(c)){
-                        
+
                         path.push(c);
                         gain.push(v);
                         this.dfs(c , distinaton , visited , path , gain);
@@ -81,10 +81,10 @@ export class operations{
 
 
     getcycles(){
-        
+
         var tempadjlist = this.adjlist;
         this.adjlist.forEach((value: node[] | undefined, key: string) => {
-        
+
             var child_list = value as node[];
             for( let child of child_list){
                 var c = child.name , v = child.weight;
@@ -130,7 +130,7 @@ export class operations{
     calc_nontouchingloops(){
         for(let i = 0 ; i <  this.loopslist.length ; i++){
             var touchinglist =Array<number>();
-            
+
             for(let j = 0 ; j < this.loopslist[i].length;  j++){
                 for( let x  = 0 ; x < this.loopslist.length ; x++){
                     for(let y = 0 ; y < this.loopslist[x].length;y++){
@@ -272,10 +272,13 @@ export class operations{
             this.loopsgain = [];
             s+= "("
             for(var x = 0 ; x <  this.pathgain[i].length; x++){
-                s+= this.pathgain[i][x]+ "*";
+              if(x===this.pathgain[i].length-1){
+                s+= this.pathgain[i][x];
+              }
+              else s+= this.pathgain[i][x]+ "*";
             }
             s += ")"
-            
+
             for(var x = 0; x < loops.length; x++){
                 var t = true;
                 for(var y = 0 ; y < loops[x].length; y++){
@@ -305,10 +308,10 @@ export class operations{
 
 
     }
-    
+
     getdeltas(){
         return this.deltas;
     }
-    
-    
+
+
 }

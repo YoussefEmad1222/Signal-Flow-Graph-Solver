@@ -98,3 +98,10 @@ summary {
 body{
   background-color: #f0f0f0;
 }
+
+p{
+  margin-left: 2%;
+  margin-top: 2%;
+  font-size: 20px;
+  font-weight: bold;
+}

@@ -3,6 +3,7 @@ import { Model } from 'backbone';
 //import * as joint from 'jointjs';
 import { node } from './node';
 import { operations } from '../operation';
+import { log } from 'mathjs';
 const joint = require('jointjs/dist/joint.js');
 
 @Component({
@@ -22,6 +23,14 @@ export class GraphComponent {
     node[] | undefined
   >();
   distination: number = 2;
+  forwardpaths:any;
+  forwardgains:any;
+  cycles:any;
+  cyclesgain:any;
+  nontouchingloops:any;
+  deltas:any;
+  numerator:any;
+  denominator:any;
   ngOnInit() {
     this.adjList = new Map<string, node[] | undefined>();
     this.graph = new joint.dia.Graph();
@@ -355,15 +364,30 @@ export class GraphComponent {
     if (temp_distination != 2) {
       temp_distination--;
     }
+    console.log("forward pathes");
+    this.forwardpaths = operation.getforwardpathes('1', temp_distination.toString());
     console.log(operation.getforwardpathes('1', temp_distination.toString()));
+    console.log("forward gains");
+    this.forwardgains = operation.getforwardgains('1', temp_distination.toString());
     console.log(operation.getforwardgains('1', temp_distination.toString()));
     operation.getcycles();
+    console.log("cycles");
+    this.cycles = operation.getcycleslist();
     console.log(operation.getcycleslist());
+    console.log("cyclesgain");
+    this.cyclesgain = operation.getcyclesgain();
     console.log(operation.getcyclesgain());
     operation.calc_nontouchingloops();
+    console.log("nontouchingloops");
+    this.nontouchingloops = operation.getnontouchingloops();
     console.log(operation.getnontouchingloops());
     console.log('start');
+    this.deltas=operation.getdeltas();
+    console.log(operation.getdeltas());
+    console.log('end');
+    this.denominator=operation.denominator();
     console.log(operation.denominator());
+    this.numerator=operation.numerator();
     console.log(operation.numerator());
   }
 }
