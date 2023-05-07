@@ -15,17 +15,30 @@ export class RouthHerwitzComponent {
 
   constructor(coff : Array<number>) {
     let first_start = true;
-    this.first = Array<string>(ceil(coff.length/2));
-    this.second = Array<string>(ceil(coff.length/2));
-    let step = Array<string>(ceil(coff.length/2));
-    this.steps = Array<string[]>(coff.length);
+    this.first = new Array<string>(ceil(coff.length/2));
+    this.second = new Array<string>(ceil(coff.length/2));
+    let step = new Array<string>(ceil(coff.length/2));
+    this.steps = new Array<string[]>(coff.length);
     this.second[this.second.length-1] = "0";
     this.done = 0;
-    for (let i = 0; i < step.length; i++) {
-      this.first[i] = String(coff[i*2]);
-      if (i*2!=coff.length-1) this.second[i] = String(coff[i*2+1]);
-      if (this.second[i]=="0") this.done++;
-      step[i] = "0"
+    if (coff.length%2==0) {
+      for (let i = 0; i < step.length; i++) {
+        this.first[i] = String(coff[i*2]);
+        if (i*2!=coff.length-1) this.second[i] = String(coff[i*2+1]);
+        if (this.second[i]=="0") this.done++;
+        step[i] = "0"
+      }
+    } else {
+      this.first[0] = "0"
+      this.second[0] = String(coff[1])
+      if (this.second[0]=="0") this.done++;
+      step[0] = "0"
+      for (let i = 1; i < step.length; i++) {
+        this.first[i] = String(coff[i*2]);
+        this.second[i] = String(coff[i*2+1]);
+        if (this.second[i]=="0") this.done++;
+        step[i] = "0"
+      }
     }
     for (let i = 0; i < coff.length; i++) this.steps[i] = step;
   }
@@ -290,8 +303,9 @@ export class RouthHerwitzComponent {
             next[j] = "0";
             if (j==0) done = true;
           }
-        } else all_zero = false;
-
+        }
+        else if (!isNaN(Number(next[j]))&&next[j]=="0") {}
+        else all_zero = false;
       }
       this.steps[i+2] = next;
       all_zero = true;

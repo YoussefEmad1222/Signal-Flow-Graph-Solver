@@ -30,7 +30,6 @@ export class operations{
         this.nontouchingloopsvalue =[];
     }
 
-
     getforwardpathes(source : string , distinaton : string) : String[][]{
         this.getpathes(source , distinaton);
         this.pathlist = this.temppathlist;
@@ -84,13 +83,9 @@ export class operations{
         }
     }
 
-
-
     getcycles(){
-
         var tempadjlist = this.adjlist;
         this.adjlist.forEach((value: node[] | undefined, key: string) => {
-
             var child_list = value as node[];
             for( let child of child_list){
                 var c = child.name , v = child.weight;
@@ -179,6 +174,7 @@ export class operations{
         }
         return this.nontouchingloops;
     }
+
     getPartial(i: number, n: number, loops: number[], nodeMap: Map<String, number>) {
         let left = n - 1;
         let currentLoop = this.loopslist[i];
@@ -211,7 +207,6 @@ export class operations{
             }
         }
     }
-
 
     denominator(){
         var s = "1 ";

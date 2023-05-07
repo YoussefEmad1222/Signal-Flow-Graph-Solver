@@ -34,6 +34,7 @@ export class GraphComponent {
   result:any;
   value1: any;
   value0:any;
+  
   ngOnInit() {
     this.adjList = new Map<string, node[] | undefined>();
     this.graph = new joint.dia.Graph();
