@@ -24,22 +24,21 @@ export class RouthHerwitzComponent {
     if (coff.length%2==0) {
       for (let i = 0; i < step.length; i++) {
         this.first[i] = String(coff[i*2]);
-        this.second[i] = String(coff[i*2+1]);
+        if (i*2!=coff.length-1) this.second[i] = String(coff[i*2+1]);
         if (this.second[i]=="0") this.done++;
         step[i] = "0"
       }
     } else {
       this.first[0] = "0"
-      this.second[0] = String(coff[0])
+      this.second[0] = String(coff[1])
       if (this.second[0]=="0") this.done++;
       step[0] = "0"
       for (let i = 1; i < step.length; i++) {
-        this.first[i] = String(coff[i*2-1]);
-        if (i*2!=coff.length-1) this.second[i] = String(coff[i*2]);
+        this.first[i] = String(coff[i*2]);
+        this.second[i] = String(coff[i*2+1]);
         if (this.second[i]=="0") this.done++;
         step[i] = "0"
       }
-      this.second[this.second.length-1] = "0"
     }
     for (let i = 0; i < coff.length; i++) this.steps[i] = step;
   }
@@ -319,8 +318,7 @@ export class RouthHerwitzComponent {
         } else if (Number(this.second[0])>0&&this.first[0].toLowerCase()=="p"||Number(this.second[0])<0&&this.first[0].toLowerCase()=="n") changes++;
       } else if (isNaN(Number(this.second[0]))) {
         if (Number(this.first[0])>0&&this.second[0].toLowerCase()=="p"||Number(this.first[0])<0&&this.second[0].toLowerCase()=="n") changes++;
-      } else if ((Number(this.second[0])>0&&Number(this.first[0])<0)||(Number(this.second[0])<0&&Number(this.first[0])>0)) changes++;
-      console.log(this.first)
+      } else if (Number(this.second[0])/abs(Number(this.second[0]))!=Number(this.first[0])/abs(Number(this.first[0]))) changes++;
     }
     let ans:[number, Array<string[]>]= [changes, this.steps];
     return ans;

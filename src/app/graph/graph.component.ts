@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Model } from 'backbone';
 //import * as joint from 'jointjs';
 import { node } from './node';
 import { operations } from '../operation';
